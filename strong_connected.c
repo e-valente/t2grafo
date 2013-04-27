@@ -13,7 +13,7 @@
 
 
 
-tree_vector_t *tree_result;
+extern tree_vector_t *tree_result;
 order_access_black_t *order_black;
 dfs_predec_t *dfs_predec;
 
@@ -40,11 +40,6 @@ tree_vector_t* calculateStrongConnected(GRAFO *grafo)
 
 
 	dfs_init(grafo, grafo[0].vertex, 0, 1);
-	//printVertexes(grafo);
-	//printf("SEGUNDO entrando em %d\n verificando ertice %d cor %d\n",  grafo[1].vertex, grafo[0].vertex, grafo[0].color );
-	//dfs_init(grafo, 1, 1, 1);
-	printVertexes(grafo);
-	//exit(1);
 
 	for(i = 0; i < grafo->total; i++)
 	{
@@ -61,30 +56,20 @@ tree_vector_t* calculateStrongConnected(GRAFO *grafo)
 	//exit(1);
 	/*imprime tempo*/
 
+	/*
 	printf("ordem do tempo: \n\n");
 	for(i = 0; i < order_black->total; i++)
 	{
 		printf(" %d",order_black->value[i]);
 	}
 	printf("\n\n");
-
-	//exit(1);
-
-	//executa DFS no grafo inverso e também em order inversa
-
-	printf("ARVORES RESULTANTES:\n\n");
-
+	*/
 
 
 
 	dfs_close();
 
 
-	/********inicia o vetor de arvores resultantes**************/
-	tree_result = NULL;
-	tree_result = (tree_vector_t*)malloc(sizeof(tree_vector_t));
-	tree_result->tree = NULL;
-	tree_result->total_trees = 0;
 
 
 
@@ -116,14 +101,10 @@ tree_vector_t* calculateStrongConnected(GRAFO *grafo)
 				my_tree->values[j][0] = dfs_predec->index[j][0];
 				my_tree->values[j][1] = dfs_predec->index[j][1];
 
-				//printf(" ARvore nova %d é %d total: %d\n", my_tree->values[j][0], my_tree->values[j][1], my_tree->total_elem);
-
 
 			}
 
 			insertTreeAtVector(&tree_result, my_tree);
-			printf("\n\n");
-
 
 
 			destroyTree(my_tree);
@@ -131,28 +112,22 @@ tree_vector_t* calculateStrongConnected(GRAFO *grafo)
 		}
 
 
-
-
-
 	}
 
 
-	//exit(1);
-	printVertexes(mygraph);
 
-	printf("Total de arvores geradas: %d\n", total_trees);
-
-
+	//valida as arvores
+	//descartas as que tem só nó raiz
+	validateVectorTree(tree_result);
 
 
-destroyVector(tree_result);
-destroyGraph(mygraph);
-dfs_close();
+	destroyGraph(mygraph);
+	dfs_close();
 
 
-free(order_black->value);
-free(order_black);
-return NULL;
+	free(order_black->value);
+	free(order_black);
+	return NULL;
 }
 
 

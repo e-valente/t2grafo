@@ -128,3 +128,107 @@ void destroyVector(tree_vector_t *my_tree_vector)
 	free(my_tree_vector);
 
 }
+
+int validateTree(tree_t *my_tree)
+{
+	int i, total_elem;
+	int count;
+
+	total_elem = my_tree->total_elem;
+	count = 0;
+
+	for(i = 0; i< total_elem; i++)
+	{
+		if(my_tree->values[i][1] == -1)count++;
+
+	}
+
+	if(count < total_elem -1){
+
+		my_tree->is_ok = 1;
+		return 1; //arvore valida
+	}
+
+
+	my_tree->is_ok = 0;
+	return 0;  //arvore invalida
+}
+
+
+
+void validateVectorTree(tree_vector_t *my_vector_tree)
+{
+	int i, total_elem;
+
+	my_vector_tree->total_validated_trees = 0;
+	total_elem = my_vector_tree->total_trees;
+
+	for(i = 0; i< total_elem; i++)
+	{
+		if(validateTree(&my_vector_tree->tree[i]) == 1)
+			my_vector_tree->total_validated_trees++;
+
+
+
+	}
+}
+
+int executeCompression(GRAFO *grafo, tree_vector_t *tree_result)
+{
+	int i, j, k, total_vertexes, total_trees, total_elem;
+	int count_vertexes_not_compacted;
+
+	total_vertexes = grafo->total;
+	total_trees = tree_result->total_trees;
+
+
+	//para cada arvore
+	for(i = 0; i < total_trees; i++)
+	{
+		total_elem = tree_result->tree[i].total_elem;
+
+		//se a arvore for valida
+		if(tree_result->tree[i].is_ok == 1){
+
+			//para cada elemento da arvore
+			for(j = 0; j < total_elem; j++)
+			{
+				//para cada vertice do grafo original
+				for(k = 0; k < total_vertexes; k++)
+				{
+					//printf("comaprando: %d com %d\n", grafo[k].vertex,tree_result->tree[i].values[j][0] );
+					if(grafo[k].vertex == tree_result->tree[i].values[j][0] &&
+							tree_result->tree[i].values[j][1] != -1)grafo[k].is_compacted = 1;
+
+
+				}
+
+
+
+			}
+
+		}
+
+
+
+	}
+
+
+	//conta os vertices nao compactados e retorna
+	count_vertexes_not_compacted = 0;
+
+	for(k = 0; k < total_vertexes; k++)
+	{
+		if(grafo[k].is_compacted == 0) count_vertexes_not_compacted++;
+
+
+	}
+
+
+	return count_vertexes_not_compacted;
+
+
+
+
+
+}

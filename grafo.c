@@ -33,6 +33,7 @@ void insertVertexAtGraph(GRAFO *grafo, int vertex)
 	index = grafo->count;
 
 	grafo[index].vertex = vertex;
+	grafo[index].is_compacted = 0;
 	grafo->count++;
 
 

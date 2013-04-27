@@ -98,13 +98,14 @@ void dfs_init(GRAFO *grafo, int first_vertex, int time, int go_count)
 
 	 */
 
-
+/*
 	printf("\n\nresultado predecessores:\n");
 	for(i = 0; i < nelem; i++)
 	{
 		printf(" predecessor de %d é %d\n", dfs_predec->index[i][0], dfs_predec->index[i][1]);
 
 	}
+	*/
 
 
 }

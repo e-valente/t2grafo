@@ -14,9 +14,7 @@
 #include "strong_connected.h"
 
 
-//topological_sort_t *my_topological_sort;
-
-
+tree_vector_t *tree_result;
 
 int main()
 {
@@ -24,9 +22,7 @@ int main()
 	GRAFO *grafo;
 	int total_vertexes, total_edges;
 	int vertex_src, vertex_dst, i;
-	//resultado
-
-
+	int vertexes_not_compacteded;
 
 
 	grafo = NULL;
@@ -60,29 +56,26 @@ int main()
 	}
 
 
+	/********inicia o vetor de arvores resultantes**************/
+	tree_result = NULL;
+	tree_result = (tree_vector_t*)malloc(sizeof(tree_vector_t));
+	tree_result->tree = NULL;
+	tree_result->total_trees = 0;
 
-
-	printAll(grafo);
+	//obtem as arvores que contem
+	//os componentes fortemente conectdos
 	calculateStrongConnected(grafo);
 
-	//dfs_init(grafo, grafo[0].vertex);
+	vertexes_not_compacteded = executeCompression(grafo, tree_result);
 
-	//printVertexes(grafo);
-
-	/*
-	for(i = 1; i < total_vertexes; i++)
-	{
-		if(grafo[i].color == WHITE)
-			dfs_init(grafo, grafo[i].vertex);
-
-	}
-
-*/
+	//imprime vertices nao compactados + arvores validas (vertices compactados)
+	printf("%d\n",vertexes_not_compacteded + tree_result->total_validated_trees);
 
 
 
 
 	destroyGraph(grafo);
+	destroyVector(tree_result);
 
 
 	return 0;

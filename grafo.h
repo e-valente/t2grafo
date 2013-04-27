@@ -16,6 +16,7 @@ typedef struct grafo {
 	int count;
 	int total;
 	int edges;
+    int is_compacted;
 	LIST *list;
 }GRAFO;
 
