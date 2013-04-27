@@ -11,21 +11,37 @@
 #include "tree.h"
 
 
-void insertTreeAtVector(tree_vector_t *my_vector, tree_t *my_tree)
+void insertTreeAtVector(tree_vector_t **my_vector, tree_t *my_tree)
 {
-	int index;
+	int index, i;
 	//int i, total_elem;
 
-	index = my_vector->total_trees++;
-
-	my_vector = (tree_vector_t*)realloc(my_vector, sizeof(tree_vector_t) * (index +1));
-
-	//my_vector[index].tree->total_elem = my_tree->total_elem;
-	my_vector[index].tree = my_tree;
+	index = (*my_vector)->total_trees++;
 
 
 
+	//*my_vector = (tree_vector_t*)realloc(*my_vector, sizeof(tree_vector_t) * (index +1));
 
+	//aloca mais um arvore no vetor de arvores
+	(*my_vector)->tree = (tree_t*)realloc((*my_vector)->tree, sizeof(tree_t) * (index + 1));
+
+	//aloca espaco para arvore atual
+	(*my_vector)->tree[index].values = (int**)malloc(sizeof(int*) * my_tree->total_elem);
+
+
+
+	//printf("IMprime nova arvore: \n\n");
+
+	(*my_vector)->tree[index].total_elem = my_tree->total_elem;
+
+	for(i = 0; i < my_tree->total_elem; i++)
+	{
+		(*my_vector)->tree[index].values[i] = (int*)malloc(sizeof(int) * 2);
+
+		(*my_vector)->tree[index].values[i][0] = my_tree->values[i][0];
+		(*my_vector)->tree[index].values[i][1] = my_tree->values[i][1];
+
+	}
 
 
 }
@@ -45,7 +61,7 @@ tree_t* createTree(int nelem)
 	//aloca pai e filho
 	for(i = 0; i < nelem; i++)
 	{
-		my_tree->values[i] = (int*)malloc(sizeof(int*) * 2);
+		my_tree->values[i] = (int*)malloc(sizeof(int) * 2);
 
 	}
 
@@ -86,23 +102,25 @@ void destroyVector(tree_vector_t *my_tree_vector)
 	int i, j, total_tree;
 	int total_element;
 
+	total_element = 1;
+
 	total_tree = my_tree_vector->total_trees;
 
 	for(i = 0; i < total_tree; i++)
 	{
-		total_element = my_tree_vector[i].tree->total_elem;
-				//->tree[i].total_elem;
+		total_element = my_tree_vector->tree[i].total_elem;
 
 		//free em cada elemento da arvore atual
 		for(j = 0; j < total_element; j++)
 		{
-			free(my_tree_vector[i].tree->values[j]);
+			free(my_tree_vector->tree[i].values[j]);
 
 		}
 
 
 		//free no ponteiro da arvore atual
-		free(my_tree_vector[i].tree->values);
+		free(my_tree_vector->tree[i].values);
+
 
 	}
 

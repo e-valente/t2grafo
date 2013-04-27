@@ -26,6 +26,6 @@ tree_t* createTree(int nelem);
 tree_vector_t* createTreeVector();
 void destroyTree(tree_t*);
 void destroyVector(tree_vector_t*);
-void insertTreeAtVector(tree_vector_t*, tree_t*);
+void insertTreeAtVector(tree_vector_t**, tree_t*);
 
 #endif /* TREE_H_ */

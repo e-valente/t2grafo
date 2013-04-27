@@ -7,7 +7,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "grafo.h"
-#include "dfs.h"
 
 GRAFO* createGraph(int total_vertex)
 {

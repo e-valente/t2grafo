@@ -13,16 +13,17 @@
 
 
 
-tree_vector_t *dfs_tree_result;
+tree_vector_t *tree_result;
 order_access_black_t *order_black;
+dfs_predec_t *dfs_predec;
 
 tree_vector_t* calculateStrongConnected(GRAFO *grafo)
 {
 	GRAFO *mygraph;
 
-	tree_vector_t *my_trees;
+	tree_t *my_tree;
 
-	int i, nelem, flag;
+	int i, j, nelem, flag;
 	int total_trees;
 
 	mygraph = calculateInverseGraph(grafo);
@@ -79,8 +80,17 @@ tree_vector_t* calculateStrongConnected(GRAFO *grafo)
 	dfs_close();
 
 
+	/********inicia o vetor de arvores resultantes**************/
+	tree_result = NULL;
+	tree_result = (tree_vector_t*)malloc(sizeof(tree_vector_t));
+	tree_result->tree = NULL;
+	tree_result->total_trees = 0;
+
+
+
 	flag = 0;
 	total_trees = 0;
+
 	for(i = order_black->total -1; i >= 0 ; i--)
 	{
 		//printf("executando para vertice: %d cor dele %d\n", mygraph[order_black->value[i]].vertex, mygraph[order_black->value[i]].color);
@@ -95,26 +105,54 @@ tree_vector_t* calculateStrongConnected(GRAFO *grafo)
 			}
 			else dfs_init(mygraph, mygraph[order_black->value[i]].vertex, 1, 0);
 
+
+			//adiciona cada arvore em um vetor separado
+			//copia vetor de predecessores para uma estrtura chamada tree
+			my_tree = createTree(dfs_predec->total);
+
+			my_tree->total_elem = dfs_predec->total;
+			for(j = 0; j < dfs_predec->total; j++)
+			{
+				my_tree->values[j][0] = dfs_predec->index[j][0];
+				my_tree->values[j][1] = dfs_predec->index[j][1];
+
+				//printf(" ARvore nova %d é %d total: %d\n", my_tree->values[j][0], my_tree->values[j][1], my_tree->total_elem);
+
+
+			}
+
+			insertTreeAtVector(&tree_result, my_tree);
+			printf("\n\n");
+
+
+
+			destroyTree(my_tree);
+
 		}
+
+
+
+
 
 	}
 
 
+	//exit(1);
+	printVertexes(mygraph);
+
 	printf("Total de arvores geradas: %d\n", total_trees);
 
-//dfs_close();
-//printAll(mygraph);
 
 
 
-
-
+destroyVector(tree_result);
 destroyGraph(mygraph);
 dfs_close();
 
+
 free(order_black->value);
 free(order_black);
-return my_trees;
+return NULL;
 }
 
 

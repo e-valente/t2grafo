@@ -38,6 +38,7 @@ typedef struct _order_access_black_t
 }order_access_black_t;
 
 
+
 int insert_at_result_queue(int);
 //retorna a arvore resultante (=predecessores)
 void dfs_init(GRAFO*, int, int, int);

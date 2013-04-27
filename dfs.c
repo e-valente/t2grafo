@@ -8,13 +8,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "list.h"
 #include "grafo.h"
 #include "dfs.h"
 //#include "topological_sort.h"
 
-dfs_result_t *dfs_result = NULL;
-dfs_predec_t *dfs_predec = NULL;
+
+extern dfs_result_t *dfs_result = NULL;
+extern dfs_predec_t *dfs_predec = NULL;
 extern order_access_black_t *order_black;
 
 void dfs_init(GRAFO *grafo, int first_vertex, int time, int go_count)

@@ -4,6 +4,7 @@
  *  Created on: Mar 19, 2013
  *      Author: emanuel
  */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include "grafo.h"
@@ -15,6 +16,8 @@
 
 //topological_sort_t *my_topological_sort;
 
+
+
 int main()
 {
 	//graph vars
@@ -22,13 +25,11 @@ int main()
 	int total_vertexes, total_edges;
 	int vertex_src, vertex_dst, i;
 	//resultado
-	tree_vector_t *my_trees;
 
 
 
 
 	grafo = NULL;
-	my_trees = NULL;
 
 
 
@@ -81,7 +82,6 @@ int main()
 
 
 
-	if(my_trees != NULL)destroyVector(my_trees);
 	destroyGraph(grafo);
 
 
